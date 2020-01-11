@@ -1,6 +1,7 @@
-{ lib, config, ... }:
+{ lib, config, pkgs, ... }:
 let
   cfg = config.video-streaming;
+  webapp = pkgs.callPackage ./webapp {};
 in lib.mkIf cfg.enable {
   services.nginx = {
     virtualHosts."${cfg.domain}" = {
@@ -12,17 +13,15 @@ in lib.mkIf cfg.enable {
             return 301 /stream/;
           '';
         };
-        "~ /stream/[a-zA-Z0-9]+$" = {
-          alias = ./stream.html;
+        "/stream/" = {
+          root = "${webapp}";
+          tryFiles = "/index.html =404";
           extraConfig = ''
-            types { }
-            default_type text/html;
+            rewrite ^/stream/(?<stream>[a-zA-Z0-9]+)\.m3u8$ /stream-meta/hls/$stream/ redirect;
           '';
         };
-        "~ /stream/(?<stream>[a-zA-Z0-9]+)\.m3u8$" = {
-          extraConfig = ''
-            return 302 /stream-meta/hls/$stream/index.m3u8;
-          '';
+        "/stream-meta/webapp/" = {
+          alias = "${webapp}/dist/";
         };
         "/stream-meta/hls/" = {
           alias = "/tmp/hls/";
@@ -31,6 +30,7 @@ in lib.mkIf cfg.enable {
               application/x-mpegURL m3u8;
               video/mp2t ts;
             }
+            index index.m3u8;
             add_header Cache-Control no-cache;
             add_header Access-Control-Allow-Origin *;
           '';
