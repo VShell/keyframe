@@ -50,7 +50,6 @@ func main() {
 		},
 		Jid:        *jid,
 		Credential: xmpp.Password(*password),
-		Insecure:   true,
 	}
 
 	router := xmpp.NewRouter()

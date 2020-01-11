@@ -24,8 +24,8 @@ in lib.mkIf cfg.enable {
     description = "Create/delete streams";
     wantedBy = [ "multi-user.target" ];
     before = [ "multi-user.target" ];
-    requires = [ "prosody.service" "create-xmppuser-stream-muc-manager.service" ];
-    after = [ "prosody.service" "create-xmppuser-stream-muc-manager.service" ];
+    requires = [ "prosody.service" "create-xmpp-user-stream-muc-manager.service" "acme-prosody-${cfg.domain}.service" ];
+    after = [ "prosody.service" "create-xmpp-user-stream-muc-manager.service" "acme-prosody-${cfg.domain}.service" ];
     serviceConfig = {
       Type = "oneshot";
       IgnoreSIGPIPE = false;
@@ -112,7 +112,7 @@ in lib.mkIf cfg.enable {
 
       # Add/remove XMPP rooms
       password=$(</var/lib/stream-muc-manager/xmpp-password)
-      ${stream-muc-manager}/bin/stream-muc-manager -address localhost:5222 -jid stream-muc-manager@streamadmin.${cfg.domain} -password "$password" -ensure $ensure -remove $remove
+      ${stream-muc-manager}/bin/stream-muc-manager -jid stream-muc-manager@streamadmin.${cfg.domain} -password "$password" -ensure $ensure -remove $remove
     '';
   };
 }

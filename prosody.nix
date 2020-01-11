@@ -7,8 +7,10 @@ in lib.mkIf cfg.enable {
     extraDomains = {
       "streamchat.${cfg.domain}" = null;
       "streamguest.${cfg.domain}" = null;
+      "streamadmin.${cfg.domain}" = null;
      };
     webroot = "/var/lib/acme/acme-challenge";
+    user = config.services.nginx.user;
     group = "prosody";
     allowKeysForGroup = true;
     postRun = ''
@@ -55,10 +57,6 @@ in lib.mkIf cfg.enable {
       "streamadmin.${cfg.domain}" = {
         enabled = true;
         domain = "streamadmin.${cfg.domain}";
-        extraConfig = ''
-          c2s_require_encryption = false
-          allow_unencrypted_plain_auth = true
-        '';
       };
     };
   };

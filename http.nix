@@ -54,5 +54,12 @@ in lib.mkIf cfg.enable {
         };
       };
     };
+    virtualHosts."streamadmin.${cfg.domain}" = {
+      locations = {
+        "/.well-known/acme-challenge" = {
+          root = "/var/lib/acme/acme-challenge";
+        };
+      };
+    };
   };
 }
