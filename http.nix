@@ -1,7 +1,7 @@
-{ config, ... }:
+{ lib, config, ... }:
 let
   cfg = config.video-streaming;
-in {
+in lib.mkIf cfg.enable {
   services.nginx = {
     virtualHosts."${cfg.domain}" = {
       enableACME = true;

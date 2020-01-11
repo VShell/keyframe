@@ -1,5 +1,7 @@
-{ pkgs, ... }:
-{
+{ lib, config, pkgs, ... }:
+let
+  cfg = config.video-streaming;
+in lib.mkIf cfg.enable {
   # todo: We should probably run our own ingest, really
   services.nginx = {
     enable = true;

@@ -23,7 +23,6 @@ in {
     };
   };
 
-  # imports = lib.mkIf cfg.enable [
   imports = [
     ./rtmpauth.nix
     ./ingest.nix

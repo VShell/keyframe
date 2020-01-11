@@ -3,7 +3,7 @@ let
   cfg = config.video-streaming;
   streamsFile = pkgs.writeText "streams" (lib.concatStringsSep "\n" (lib.mapAttrsToList (k: v: "${k}\t${v.email}\t${if v.jid != null then v.jid else ""}") cfg.streams));
   stream-muc-manager = pkgs.callPackage ./stream-muc-manager {};
-in {
+in lib.mkIf cfg.enable {
   systemd.services.create-xmpp-user-stream-muc-manager = {
     description = "Create stream-muc-manager@streamadmin.${cfg.domain}";
     serviceConfig = {

@@ -1,7 +1,8 @@
-{ pkgs, ... }:
+{ lib, config, pkgs, ... }:
 let
+  cfg = config.video-streaming;
   rtmpauth = pkgs.callPackage ./rtmpauth {};
-in {
+in lib.mkIf cfg.enable {
   users.groups.rtmpauth = {};
   users.users.rtmpauth = {
     description = "rtmpauth service user";

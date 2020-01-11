@@ -1,8 +1,7 @@
-{ config, ... }:
+{ lib, config, ... }:
 let
   cfg = config.video-streaming;
-in
-{
+in lib.mkIf cfg.enable {
   security.acme.certs."prosody-${cfg.domain}" = {
     domain = cfg.domain;
     extraDomains = {
