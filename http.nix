@@ -28,7 +28,7 @@ in lib.mkIf cfg.enable {
           alias = "/tmp/hls/";
           extraConfig = ''
             types {
-              application/vns.apple.mpegurl m3u8;
+              application/x-mpegURL m3u8;
               video/mp2t ts;
             }
             add_header Cache-Control no-cache;
