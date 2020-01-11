@@ -26,7 +26,7 @@ converse.plugins.add('hide-chatroom-participants', {
 export default class StreamChatComponent extends Component {
   @action
   initConverseJS() {
-    let domain = 'videotest.alterednarrative.net';
+    let domain = location.hostname;
     let room_jid = this.args.stream + '@streamchat.' + domain;
 
     converse.initialize({
