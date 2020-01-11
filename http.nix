@@ -4,6 +4,8 @@ let
 in {
   services.nginx = {
     virtualHosts."${cfg.domain}" = {
+      enableACME = true;
+      forceSSL = true;
       locations = {
         "= /" = {
           extraConfig = ''
@@ -35,6 +37,20 @@ in {
         };
         "= /stream-meta/bosh" = {
           proxyPass = "http://localhost:5280/http-bind";
+        };
+      };
+    };
+    virtualHosts."streamguest.${cfg.domain}" = {
+      locations = {
+        "/.well-known/acme-challenge" = {
+          root = "/var/lib/acme/acme-challenge";
+        };
+      };
+    };
+    virtualHosts."streamchat.${cfg.domain}" = {
+      locations = {
+        "/.well-known/acme-challenge" = {
+          root = "/var/lib/acme/acme-challenge";
         };
       };
     };
