@@ -10,4 +10,5 @@ Router.map(function() {
   this.route('stream', {
     path: '/:stream_id'
   });
+  this.route('license');
 });
