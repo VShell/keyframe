@@ -8,13 +8,13 @@ in lib.mkIf cfg.enable {
     description = "Create stream-muc-manager@streamadmin.${cfg.domain}";
     serviceConfig = {
       Type = "oneshot";
-      StateDirectory = "/var/lib/keyframe/stream-muc-manager";
+      StateDirectory = "keyframe/stream-muc-manager";
       ConditionPathExists = "!/var/lib/keyframe/stream-muc-manager/xmpp-password";
       IgnoreSIGPIPE = false;
     };
     script = ''
       password=$(tr -dc abcdefghijklmnopqrstuvwxyz < /dev/urandom | fold -w 20 | head -n1)
-      install -m 600 <(printf '%s' $password) /var/lib/stream-muc-manager/xmpp-password
+      install -m 600 <(printf '%s' $password) /var/lib/keyframe/stream-muc-manager/xmpp-password
       ${pkgs.prosody}/bin/prosodyctl register stream-muc-manager streamadmin.${cfg.domain} $password
     '';
   };
@@ -49,7 +49,7 @@ in lib.mkIf cfg.enable {
 
       exec {ensurefd}<> >(exec install -m 600 /dev/stdin $ensure)
       exec {removefd}<> >(exec install -m 600 /dev/stdin $remove)
-      exec {rtmpusersnewfd}<> >(exec install -o rtmpauth -g rtmpauth -m 660 /dev/stdin /var/lib/rtmpauth/users.new)
+      exec {rtmpusersnewfd}<> >(exec install -o rtmpauth -g rtmpauth -m 660 /dev/stdin /var/lib/keyframe/rtmpauth/users.new)
 
       genpassword() {
         tr -dc abcdefghijklmnopqrstuvwxyz < /dev/urandom | fold -w 20 | head -n1
@@ -62,7 +62,7 @@ in lib.mkIf cfg.enable {
       done
       exec {ensurefd}>&-
 
-      [[ -d /var/lib/rtmpauth ]] || install -o rtmpauth -g rtmpauth -m 766 -d /var/lib/rtmpauth
+      [[ -d /var/lib/keyframe/rtmpauth ]] || install -o rtmpauth -g rtmpauth -m 766 -d /var/lib/rtmpauth
       # Check which streams to keep
       while IFS= read -r line; do
         stream=$(printf '%s' $line | cut -d: -f1)
@@ -75,7 +75,7 @@ in lib.mkIf cfg.enable {
         done
         # Stream not in new array, remove its room
         printf '%s\n' $stream@streamchat.${cfg.domain} >&$removefd
-      done < /var/lib/rtmpauth/users
+      done < /var/lib/keyframe/rtmpauth/users
       exec {removefd}>&-
 
       # Add new streams
@@ -102,7 +102,7 @@ in lib.mkIf cfg.enable {
         ${pkgs.system-sendmail}/bin/sendmail "$email" <$tmp/email || true
       done
       exec {rtmpusersnewfd}>&-
-      mv /var/lib/rtmpauth/users{.new,}
+      mv /var/lib/keyframe/rtmpauth/users{.new,}
 
       # Ask rtmpauth to reload its config, if it's up
       if systemctl is-active rtmpauth --quiet; then

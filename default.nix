@@ -34,7 +34,7 @@ in {
           };
         };
       });
-      description = "Streams to create on this server."
+      description = "Streams to create on this server.";
     };
   };
 
