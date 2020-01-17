@@ -51,7 +51,7 @@ func ReadConfig(config *Config) {
 
 	config.UsersFromKeys = make(map[string]string)
 
-	file, err := os.Open("/var/lib/rtmpauth/users")
+	file, err := os.Open("/var/lib/keyframe/rtmpauth/users")
 	if err != nil {
 		log.Fatal(err)
 	}

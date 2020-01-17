@@ -8,13 +8,12 @@ in lib.mkIf cfg.enable {
     description = "Create stream-muc-manager@streamadmin.${cfg.domain}";
     serviceConfig = {
       Type = "oneshot";
+      StateDirectory = "/var/lib/keyframe/stream-muc-manager";
+      ConditionPathExists = "!/var/lib/keyframe/stream-muc-manager/xmpp-password";
       IgnoreSIGPIPE = false;
     };
     script = ''
-      [[ -f /var/lib/stream-muc-manager/xmpp-password ]] && exit
-
       password=$(tr -dc abcdefghijklmnopqrstuvwxyz < /dev/urandom | fold -w 20 | head -n1)
-      [[ -d /var/lib/stream-muc-manager ]] || install -m 766 -d /var/lib/stream-muc-manager
       install -m 600 <(printf '%s' $password) /var/lib/stream-muc-manager/xmpp-password
       ${pkgs.prosody}/bin/prosodyctl register stream-muc-manager streamadmin.${cfg.domain} $password
     '';
@@ -111,7 +110,7 @@ in lib.mkIf cfg.enable {
       fi
 
       # Add/remove XMPP rooms
-      password=$(</var/lib/stream-muc-manager/xmpp-password)
+      password=$(</var/lib/keyframe/stream-muc-manager/xmpp-password)
       ${stream-muc-manager}/bin/stream-muc-manager -jid stream-muc-manager@streamadmin.${cfg.domain} -password "$password" -ensure $ensure -remove $remove
     '';
   };

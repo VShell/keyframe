@@ -7,7 +7,8 @@ in lib.mkIf cfg.enable {
   users.users.rtmpauth = {
     description = "rtmpauth service user";
     group = "rtmpauth";
-    home = "/var/lib/rtmpauth";
+    isSystemUser = true;
+    home = "/var/lib/keyframe/rtmpauth";
   };
 
   systemd.services.rtmpauth = {
@@ -20,7 +21,7 @@ in lib.mkIf cfg.enable {
       fi
     '';
     serviceConfig = {
-      StateDirectory = "rtmpauth";
+      StateDirectory = "keyframe/rtmpauth";
       ExecStart = "${rtmpauth}/bin/rtmpauth";
       ExecReload = "${pkgs.coreutils}/bin/kill -SIGUSR1 $MAINPID";
       User = "rtmpauth";
