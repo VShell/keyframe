@@ -1,6 +1,6 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
-import ENV from 'video-streaming/config/environment';
+import ENV from 'keyframe/config/environment';
 
 converse.plugins.add('hide-chatroom-participants', {
   dependencies: ['converse-muc-views'],

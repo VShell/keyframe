@@ -12246,8 +12246,8 @@ let
     };
   };
   args = {
-    name = "video-streaming";
-    packageName = "video-streaming";
+    name = "keyframe";
+    packageName = "keyframe";
     version = "0.0.0";
     src = ./.;
     dependencies = [
@@ -14794,7 +14794,7 @@ let
     ];
     buildInputs = globalBuildInputs;
     meta = {
-      description = "Small description for video-streaming goes here";
+      description = "Small description for keyframe goes here";
       license = "MIT";
     };
     production = false;

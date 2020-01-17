@@ -1,6 +1,6 @@
 { lib, pkgs, config, ... }:
 let
-  cfg = config.video-streaming;
+  cfg = config.keyframe;
   streamsFile = pkgs.writeText "streams" (lib.concatStringsSep "\n" (lib.mapAttrsToList (k: v: "${k}\t${v.email}\t${if v.jid != null then v.jid else ""}") cfg.streams));
   stream-muc-manager = pkgs.callPackage ./stream-muc-manager {};
 in lib.mkIf cfg.enable {

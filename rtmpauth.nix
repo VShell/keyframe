@@ -1,6 +1,6 @@
 { lib, config, pkgs, ... }:
 let
-  cfg = config.video-streaming;
+  cfg = config.keyframe;
   rtmpauth = pkgs.callPackage ./rtmpauth {};
 in lib.mkIf cfg.enable {
   users.groups.rtmpauth = {};

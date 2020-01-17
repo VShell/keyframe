@@ -1,10 +1,10 @@
 { lib, pkgs, config, ... }:
 with lib;
 let
-  cfg = config.video-streaming;
+  cfg = config.keyframe;
 in {
-  options.video-streaming = {
-    enable = mkEnableOption "video streaming";
+  options.keyframe = {
+    enable = mkEnableOption "Keyframe video streaming server";
     domain = mkOption {
       type = types.str;
     };

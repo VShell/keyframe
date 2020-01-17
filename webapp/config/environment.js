@@ -2,7 +2,7 @@
 
 module.exports = function(environment) {
   let ENV = {
-    modulePrefix: 'video-streaming',
+    modulePrefix: 'keyframe',
     environment,
     rootURL: '/',
     assetRootURL: '/',

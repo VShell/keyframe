@@ -1,6 +1,6 @@
 { lib, config, pkgs, ... }:
 let
-  cfg = config.video-streaming;
+  cfg = config.keyframe;
   webapp = pkgs.callPackage ./webapp {};
 in lib.mkIf cfg.enable {
   services.nginx = {

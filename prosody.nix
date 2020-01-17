@@ -1,6 +1,6 @@
 { lib, config, ... }:
 let
-  cfg = config.video-streaming;
+  cfg = config.keyframe;
 in lib.mkIf cfg.enable {
   security.acme.certs."prosody-${cfg.domain}" = {
     domain = cfg.domain;
