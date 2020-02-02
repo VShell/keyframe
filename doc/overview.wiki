@@ -1,0 +1,30 @@
+<title>Technical overview</title>
+
+The Keyframe project is a distribution of multiple components, using a NixOS configuration to define a system which integrates them.
+
+These components are, today:
+
+  1.  <b>nginx</b>, with <b>nginx-rtmp-module</b>, provides a frontend HTTP server and RTMP ingest server.
+      The HTTP server serves up the Ember.JS application, as well as HLS streams. It also proxies to Prosody's BOSH endpoint. It also serves acme challenge responses for TLS certificates.
+      The RTMP server receives input on a "publish" application with a "stream key", which it authenticates using rtmpauth, then translates the incoming stream into HLS for the HTTP server to serve.
+
+  2.  <b>Prosody</b> XMPP server provides multi-user chatrooms for streams.
+      A few subdomains are used - no subdomain for stream owners, streamguest for anonymous viewers, streamadmin for the stream-muc-manager user, and streamchat for the MUC domain.
+      Users cannot create new rooms on the MUC server themselves.
+      Federation is enabled for stream owners, but not for anonymous viewers.
+
+  3.  <b>rtmpauth</b> authenticates stream keys for nginx-rtmp-module over an internal HTTP endpoint.
+      It uses a file, <code>/var/lib/keyframe/rtmpauth/users</code>, which maps stream keys to usernames.
+      In order to reload the file, it must receive SIGUSR1.
+
+  4.  <b>stream-muc-manager</b> creates and deletes MUC rooms in Prosody.
+      It receives a list of rooms to ensure exist along with their stream owner JIDs, and a list of rooms to remove.
+      It then creates rooms that don't exist, adds the owner JID as a MUC admin, and removes the rooms in the remove list.
+      This is a one-off process - it does not run regularly.
+
+  5.  <b>webapp</b> is the Ember.JS frontend.
+      It integrates Video.JS for streaming HLS, and Converse.JS for XMPP connections over BOSH.
+
+  6.  <b>streams.nix</b> contains a script which attempts to generate stream keys for new streams, create new Prosody users for new stream owners, send emails to new stream owners with their authentication info, and run stream-muc-manager with the correct lists of active and removed streams.
+
+  7.  <b>LetsEncrypt</b> is used to generate TLS keys for Prosody and nginx.
