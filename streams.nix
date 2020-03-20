@@ -3,6 +3,7 @@ let
   cfg = config.keyframe;
   streamsFile = pkgs.writeText "streams" (lib.concatStringsSep "\n" (lib.mapAttrsToList (k: v: "${k}\t${v.email}\t${if v.jid != null then v.jid else ""}") cfg.streams));
   stream-muc-manager = pkgs.callPackage ./stream-muc-manager {};
+  prosodyCertService = lib.optional (cfg.tls.mode == "letsencrypt") "acme-prosody-${cfg.domain}.service";
 in lib.mkIf cfg.enable {
   systemd.services.create-xmpp-user-stream-muc-manager = {
     description = "Create stream-muc-manager@streamadmin.${cfg.domain}";
@@ -23,8 +24,8 @@ in lib.mkIf cfg.enable {
     description = "Create/delete streams";
     wantedBy = [ "multi-user.target" ];
     before = [ "multi-user.target" ];
-    requires = [ "prosody.service" "create-xmpp-user-stream-muc-manager.service" "acme-prosody-${cfg.domain}.service" ];
-    after = [ "prosody.service" "create-xmpp-user-stream-muc-manager.service" "acme-prosody-${cfg.domain}.service" ];
+    requires = [ "prosody.service" "create-xmpp-user-stream-muc-manager.service" ] ++ prosodyCertService;
+    after = [ "prosody.service" "create-xmpp-user-stream-muc-manager.service" ] ++ prosodyCertService;
     serviceConfig = {
       Type = "oneshot";
       IgnoreSIGPIPE = false;

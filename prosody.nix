@@ -1,8 +1,17 @@
 { lib, config, ... }:
 let
   cfg = config.keyframe;
+  certPaths = if cfg.tls.mode == "letsencrypt" then
+    {
+      certificate = "/var/lib/acme/prosody-${cfg.domain}/fullchain.pem";
+      key = "/var/lib/acme/prosody-${cfg.domain}/key.pem";
+    }
+  else
+    {
+      inherit (cfg.tls) certificate key;
+    };
 in lib.mkIf cfg.enable {
-  security.acme.certs."prosody-${cfg.domain}" = {
+  security.acme.certs."prosody-${cfg.domain}" = lib.mkIf (cfg.tls.mode == "letsencrypt") {
     domain = cfg.domain;
     extraDomains = {
       "streamchat.${cfg.domain}" = null;
@@ -39,16 +48,16 @@ in lib.mkIf cfg.enable {
         enabled = true;
         domain = "${cfg.domain}";
         ssl = {
-          cert = "/var/lib/acme/prosody-${cfg.domain}/fullchain.pem";
-          key = "/var/lib/acme/prosody-${cfg.domain}/key.pem";
+          cert = certPaths.certificate;
+          key = certPaths.key;
         };
       };
       "streamguest.${cfg.domain}" = {
         enabled = true;
         domain = "streamguest.${cfg.domain}";
         ssl = {
-          cert = "/var/lib/acme/prosody-${cfg.domain}/fullchain.pem";
-          key = "/var/lib/acme/prosody-${cfg.domain}/key.pem";
+          cert = certPaths.certificate;
+          key = certPaths.key;
         };
         extraConfig = ''
           authentication = "anonymous"
@@ -57,11 +66,15 @@ in lib.mkIf cfg.enable {
       "streamadmin.${cfg.domain}" = {
         enabled = true;
         domain = "streamadmin.${cfg.domain}";
+        ssl = {
+          cert = certPaths.certificate;
+          key = certPaths.key;
+        };
       };
     };
   };
 
-  systemd.services.prosody = {
+  systemd.services.prosody = lib.mkIf (cfg.tls.mode == "letsencrypt") {
     wants = [ "acme-prosody-${cfg.domain}.service" "acme-selfsigned-prosody-${cfg.domain}.service" ];
     after = [ "acme-selfsigned-prosody-${cfg.domain}.service" ];
   };

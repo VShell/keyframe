@@ -13,6 +13,26 @@ in {
         domain.
       '';
     };
+    tls = mkOption {
+      type = types.submodule {
+        options = {
+          mode = mkOption {
+            type = types.enum [ "letsencrypt" "localcert" ];
+            default = "letsencrypt";
+            description = "Whether to fetch certificates from Let's Encrypt or use a local certificate";
+          };
+          certificate = mkOption {
+            type = types.path;
+            description = "Path to TLS certificate in localcert mode";
+          };
+          key = mkOption {
+            type = types.path;
+            description = "Path to TLS key in localcert mode";
+          };
+        };
+      };
+      description = "TLS configuration";
+    };
     streams = mkOption {
       type = types.attrsOf (types.submodule {
         options = {
