@@ -16,8 +16,8 @@ in lib.mkIf cfg.enable {
     wantedBy = [ "multi-user.target" ];
     after = [ "networking.target" ];
     preStart = ''
-      if [[ ! -e /var/lib/rtmpauth/users ]]; then
-        install -m 600 /dev/null /var/lib/rtmpauth/users
+      if [[ ! -e /var/lib/keyframe/rtmpauth/users ]]; then
+        install -m 600 /dev/null /var/lib/keyframe/rtmpauth/users
       fi
     '';
     serviceConfig = {
