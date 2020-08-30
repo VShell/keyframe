@@ -12,6 +12,11 @@ module.exports = function(defaults) {
       prepend: ENV.assetRootURL,
       extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map', 'svg', 'eot', 'ttf', 'woff', 'woff2'],
       exclude: ['assets/conversejs/locales']
+    },
+
+    'ember-bootstrap': {
+      'bootstrapVersion': 4,
+      'importBootstrapCSS': true
     }
   });
 
@@ -28,10 +33,9 @@ module.exports = function(defaults) {
   // please specify an object with the list of modules as keys
   // along with the exports of each module as its value.
   app.import({
-    development: 'node_modules/video.js/dist/video-js.css',
-    production:  'node_modules/video.js/dist/video-js.min.css'
+    development: 'vendor/dash.all.debug.js',
+    production:  'vendor/dash.all.min.js'
   });
-
   app.import({
     development: 'vendor/converse.js',
     production:  'vendor/converse.min.js'

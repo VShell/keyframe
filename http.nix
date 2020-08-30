@@ -14,8 +14,11 @@ let
   ]);
 in lib.mkIf cfg.enable {
   services.nginx = {
+    enable = true;
     appendHttpConfig = ''
       server_names_hash_bucket_size 128;
+      proxy_http_version 1.1;
+      proxy_set_header Host $host;
     '';
     virtualHosts = {
       "${cfg.domain}" = {
@@ -36,23 +39,34 @@ in lib.mkIf cfg.enable {
               rewrite ^/stream/(?<stream>[a-zA-Z0-9]+)\.m3u8$ /stream-meta/hls/$stream/ redirect;
             '';
           };
+          "~ ^/stream/[a-zA-Z0-9]+.mpd$" = {
+            proxyPass = "http://unix:/run/keyframe/streamredirect/http.sock";
+          };
+          "= /api/v1/ingestd-notify" = {
+            proxyPass = "http://unix:/run/keyframe/streamredirect/http.sock";
+          };
           "/stream-meta/webapp/" = {
             alias = "${webapp}/dist/";
           };
-          "/stream-meta/hls/" = {
-            alias = "/tmp/hls/";
-            extraConfig = ''
-              types {
-                application/x-mpegURL m3u8;
-                video/mp2t ts;
-              }
-              index index.m3u8;
-              add_header Cache-Control no-cache;
-              add_header Access-Control-Allow-Origin *;
-            '';
+          "/stream-meta/logos/" = {
+            alias = "/var/lib/keyframe/logos/";
           };
           "= /stream-meta/bosh" = {
             proxyPass = "http://localhost:5280/http-bind";
+          };
+        };
+      };
+      "ingestd.${cfg.domain}" = {
+        enableACME = cfg.tls.mode == "letsencrypt";
+        sslCertificate = lib.mkIf (cfg.tls.mode != "letsencrypt") cfg.tls.certificate;
+        sslCertificateKey = lib.mkIf (cfg.tls.mode != "letsencrypt") cfg.tls.key;
+        forceSSL = true;
+        extraConfig = ''
+          proxy_buffering off;
+        '';
+        locations = {
+          "/" = {
+            proxyPass = "http://unix:/run/ingestd/httpd/http-public.sock";
           };
         };
       };

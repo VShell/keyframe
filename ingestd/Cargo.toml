@@ -1,0 +1,7 @@
+[workspace]
+members = [
+    "ingestd-srt",
+    "ingestd-httpd",
+    "libsrt-sys",
+    "async-h1",
+]

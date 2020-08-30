@@ -29,20 +29,14 @@ in lib.mkIf cfg.enable {
 
   services.prosody = {
     enable = true;
+    xmppComplianceSuite = false;
     modules = {
       bosh = true;
-      mam = true;
     };
     extraConfig = ''
-      https_ports = { }
       consider_bosh_secure = true
-
-      Component "streamchat.${cfg.domain}" "muc"
-        name = "${cfg.domain} stream chatrooms"
-        restrict_room_creation = "admin"
-        muc_tombstones = false
-        admins = { "stream-muc-manager@streamadmin.${cfg.domain}" }
     '';
+    httpsPorts = [];
     virtualHosts = {
       "${cfg.domain}" = {
         enabled = true;
@@ -72,6 +66,15 @@ in lib.mkIf cfg.enable {
         };
       };
     };
+    muc = [ {
+      domain = "streamchat.${cfg.domain}";
+      name = "${cfg.domain} stream chatrooms";
+      restrictRoomCreation = "admin";
+      tombstones = false;
+      extraConfig = ''
+        admins = { "stream-muc-manager@streamadmin.${cfg.domain}" }
+      '';
+    } ];
   };
 
   systemd.services.prosody = lib.mkIf (cfg.tls.mode == "letsencrypt") {

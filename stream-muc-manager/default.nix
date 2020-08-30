@@ -2,5 +2,5 @@
 buildGoModule {
   name = "stream-muc-manager";
   src = ./.;
-  modSha256 = "1qmhr14ada1vh1pmnms0kaka2mxllmxksx8wr8xnqgsdxn55m1ql";
+  vendorSha256 = "0vvgqc9r1ygjbaybjgh2isgan9dp70sjql5xfbgbra2m2arwyr2p";
 }

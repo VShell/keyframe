@@ -1,0 +1,6 @@
+CREATE TABLE streams (
+	id INTEGER PRIMARY KEY NOT NULL,
+	active BOOLEAN NOT NULL DEFAULT FALSE,
+	notify_url TEXT NOT NULL,
+        token TEXT NOT NULL
+);

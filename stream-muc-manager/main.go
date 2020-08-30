@@ -204,8 +204,9 @@ func postConnect(router *xmpp.Router, ensure []Room, remove []string) (*sync.Wai
 		}
 		firstRun = false
 
-		for _, room := range ensure {
+		for _, roomLoop := range ensure {
 			var status RoomStatus
+			room := roomLoop
 
 			uuid, err := uuid.NewRandom()
 			if err != nil {
@@ -299,8 +300,9 @@ func postConnect(router *xmpp.Router, ensure []Room, remove []string) (*sync.Wai
 			}()
 		}
 
-		for _, room := range remove {
+		for _, roomLoop := range remove {
 			var status RoomStatus
+			room := roomLoop
 
 			iq := stanza.NewIQ(stanza.Attrs{To: room, Type: stanza.IQTypeSet})
 			iq.Payload = OwnerQuery{Destroy: &Destroy{}}

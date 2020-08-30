@@ -1,0 +1,26 @@
+[package]
+name = "ingestd-srt"
+version = "0.1.0"
+authors = ["Shell Turner <shell@alterednarrative.net>"]
+edition = "2018"
+
+[dependencies]
+libc = "0.2.73"
+smol = "0.3.3"
+futures = "0.3.5"
+libsrt-sys = { path = "../libsrt-sys" }
+uuid = { version = "0.8.1", features = ["v4"] }
+thiserror = "1.0.20"
+openat = "0.1.19"
+pathsearch = "0.2.0"
+blake3 = "0.3.5"
+arc-swap = "0.4.7"
+roaring = "0.6.0"
+serde = { version = "1.0.114", features = ["derive"] }
+base64 = "0.12.3"
+toml = "0.5.6"
+sqlx = { version = "0.3.5", features = ["sqlite"] }
+signal-hook = "0.1.16"
+http-types = "2.3.0"
+async-h1 = "2.1.0"
+async-native-tls = "0.3.3"

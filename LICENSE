@@ -1,11 +1,13 @@
 Various components of Keyframe are released under different licenses.
 
-rtmpauth/ - AGPLv3 or later
-stream-muc-manager/ - AGPLv3 or later
+cms/ - AGPLv3 or later
+ingestd/ - AGPLv3 or later
+stream-muc-manager/ - GPLv3 or later
+systemd-socket-activation-shim/ - GPLv3 or later
 webapp/ - GPLv3 or later
 This directory - BSD 2-clause
 
-All components are copyright 2019 Shell Turner.
+All components are copyright 2019 Shell Turner. Some components additionally have other copyrights.
 
 ====================
 BSD 2-clause license

@@ -1,0 +1,62 @@
+From 73566ecc9d37a3cf50bdb24053c68ae526783767 Mon Sep 17 00:00:00 2001
+From: Shell Turner <shell@alterednarrative.net>
+Date: Mon, 27 Jul 2020 17:22:13 +0100
+Subject: [PATCH 2/2] Add ability to inherit a UNIX socket
+
+---
+ include/gpac/network.h | 1 +
+ src/filters/in_sock.c  | 5 ++++-
+ src/utils/os_net.c     | 8 ++++++++
+ 3 files changed, 13 insertions(+), 1 deletion(-)
+
+diff --git a/include/gpac/network.h b/include/gpac/network.h
+index f513de5ac..079979cea 100644
+--- a/include/gpac/network.h
++++ b/include/gpac/network.h
+@@ -401,6 +401,7 @@ Binds the given socket to the specified port.
+ \return error if any
+  */
+ GF_Err gf_sk_bind(GF_Socket *sock, const char *local_ip, u16 port, const char *peer_name, u16 peer_port, u32 options);
++GF_Err gf_sk_inherit(GF_Socket *sock);
+ /*!
+ \brief connects a socket
+ 
+diff --git a/src/filters/in_sock.c b/src/filters/in_sock.c
+index 83b6366db..2ffefd3d4 100644
+--- a/src/filters/in_sock.c
++++ b/src/filters/in_sock.c
+@@ -130,7 +130,11 @@ static GF_Err sockin_initialize(GF_Filter *filter)
+ 	}
+ 
+ 	/*do we have a source ?*/
+-	if (gf_sk_is_multicast_address(url)) {
++	if (!stricmp(url, "inherit")) {
++		e = gf_sk_inherit(ctx->sock_c.socket);
++		ctx->listen = GF_FALSE;
++		GF_LOG(GF_LOG_INFO, GF_LOG_NETWORK, ("[SockIn] inheriting from fd 3"));
++	} else if (gf_sk_is_multicast_address(url)) {
+ 		e = gf_sk_setup_multicast(ctx->sock_c.socket, url, port, 0, 0, ctx->ifce);
+ 		ctx->listen = GF_FALSE;
+ 	} else if ((sock_type==GF_SOCK_TYPE_UDP) 
+diff --git a/src/utils/os_net.c b/src/utils/os_net.c
+index 2c699a3e9..ad4545071 100644
+--- a/src/utils/os_net.c
++++ b/src/utils/os_net.c
+@@ -496,6 +496,14 @@ void gf_sk_set_usec_wait(GF_Socket *sock, u32 usec_wait)
+ 	sock->usec_wait = (usec_wait>=1000000) ? 500 : usec_wait;
+ }
+ 
++GF_Err gf_sk_inherit(GF_Socket *sock)
++{
++	sock->socket = 3;
++	if (sock->flags & GF_SOCK_NON_BLOCKING)
++		gf_sk_set_block_mode(sock, GF_TRUE);
++	return GF_OK;
++}
++
+ //connects a socket to a remote peer on a given port
+ GF_EXPORT
+ GF_Err gf_sk_connect(GF_Socket *sock, const char *PeerName, u16 PortNumber, const char *local_ip)
+-- 
+2.27.0
+

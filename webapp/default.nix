@@ -16,8 +16,9 @@ stdenv.mkDerivation {
   configurePhase = "";
   buildPhase = ''
     ln -s ${package}/lib/node_modules/keyframe/node_modules node_modules
+    ls -la node_modules
     export XDG_CONFIG_HOME=$(mktemp -d)
-    node_modules/.bin/ember build --environment production --output-path $out/dist/
+    ./node_modules/.bin/ember build --environment production --output-path $out/dist/
   '';
   installPhase = ''
     mv $out/dist/index.html $out/index.html

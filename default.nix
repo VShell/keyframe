@@ -31,6 +31,7 @@ in {
           };
         };
       };
+      default = {};
       description = "TLS configuration";
     };
     streams = mkOption {
@@ -59,22 +60,10 @@ in {
   };
 
   imports = [
-    ./rtmpauth.nix
-    ./ingest.nix
+    ./cms.nix
+    ./ingestd.nix
     ./prosody.nix
     ./streams.nix
     ./http.nix
   ];
-
-  config = lib.mkIf cfg.enable {
-    environment.systemPackages = [
-      (pkgs.substituteAll {
-        src = ./genstreamkey.sh;
-        name = "genstreamkey";
-        dir = "bin";
-        isExecutable = true;
-        bash = "${pkgs.bash}/bin/bash";
-      })
-    ];
-  };
 }
