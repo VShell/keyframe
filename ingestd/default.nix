@@ -16,4 +16,5 @@ rustPlatform.buildRustPackage rec {
     ${sqlite}/bin/sqlite3 $database_path < ${./.}/ingestd-srt/schema.sql
     export DATABASE_URL=sqlite:$database_path
   '';
+  doCheck = false;
 }
