@@ -1,7 +1,7 @@
 { lib, config, pkgs, ... }:
 let
   cfg = config.keyframe;
-  webapp = pkgs.callPackage ./webapp {};
+  ui = pkgs.callPackage ./ui {};
   acmeVhost = domain:
     lib.nameValuePair domain
     (lib.mkIf (cfg.tls.mode == "letsencrypt") {
@@ -33,7 +33,7 @@ in lib.mkIf cfg.enable {
             '';
           };
           "/stream/" = {
-            root = "${webapp}";
+            root = "${ui}";
             tryFiles = "/index.html =404";
             extraConfig = ''
               rewrite ^/stream/(?<stream>[a-zA-Z0-9]+)\.m3u8$ /stream-meta/hls/$stream/ redirect;
@@ -45,8 +45,8 @@ in lib.mkIf cfg.enable {
           "= /api/v1/ingestd-notify" = {
             proxyPass = "http://unix:/run/keyframe/streamredirect/http.sock";
           };
-          "/stream-meta/webapp/" = {
-            alias = "${webapp}/dist/";
+          "/stream-meta/ui/" = {
+            root = "${ui}";
           };
           "/stream-meta/logos/" = {
             alias = "/var/lib/keyframe/logos/";

@@ -1,14 +1,14 @@
 { gcc8Stdenv, fetchFromGitHub, pkgconfig, zlib }:
 
 gcc8Stdenv.mkDerivation rec {
-  version = "1.0.0";
+  version = "1.0.1";
   pname = "gpac";
 
   src = fetchFromGitHub {
     owner = "gpac";
     repo = "gpac";
-    rev = "v1.0.0";
-    sha256 = "11jrklaahhdfqhci7f3lzv8wchh9bc91rg6w8ibh6varrk692vsb";
+    rev = "v1.0.1";
+    sha256 = "0gj46jpprfqv3wyagblv3a52chbplyzhvpra66v63czjibqsslm5";
   };
 
   patches = [

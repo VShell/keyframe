@@ -1,0 +1,9 @@
+#conversejs {
+  --occupants-features-display: none;
+  --occupants-border-bottom: none;
+  height: 100%;
+}
+
+#conversejs .chat-head {
+  display: none;
+}
