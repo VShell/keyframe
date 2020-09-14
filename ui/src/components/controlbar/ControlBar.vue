@@ -58,7 +58,7 @@ import { MediaPlayer } from 'dashjs';
 const liveThresholdSecs = 4;
 
 export default {
-  name: 'VideoControlBar',
+  name: 'ControlBar',
   props: {
     player: {
       type: Object,
@@ -96,7 +96,11 @@ export default {
     player.off(MediaPlayer.events.PLAYBACK_TIME_UPDATED, this.dashPlayTimeUpdate, this);
     player.off(MediaPlayer.events.STREAM_INITIALIZED, this.dashStreamInitialized, this);
     player.off(MediaPlayer.events.STREAM_TEARDOWN_COMPLETE, this.dashStreamTeardownComplete, this);
-    player.getVideoElement().removeEventListener('volumechange', this.videoVolumeChanged);
+    try {
+      player.getVideoElement().removeEventListener('volumechange', this.videoVolumeChanged);
+    } catch (e) {
+      // If there's no video element, no problem
+    }
   },
   computed: {
     playingIcon() {
