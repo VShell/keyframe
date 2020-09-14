@@ -1,6 +1,7 @@
 { callPackage, fetchFromGitHub, runCommand, jq, lib, stdenv, nodejs-10_x }:
 let
   version = "6.0.1";
+  license-checker = (callPackage ./license-package.nix {})."license-checker-25.0.1";
   nodePackages = callPackage ./package.nix {
     nodejs = nodejs-10_x;
   };
@@ -55,5 +56,13 @@ stdenv.mkDerivation {
   installPhase = ''
     cp -R dist $out
     cp -R sass/webfonts $out
+
+    licenses=`mktemp -d`/licenses.json
+    ${license-checker}/bin/license-checker --json --out $licenses
+    ${jq}/bin/jq -r 'to_entries[]|select(.value.licenseFile)|.key+"\t"+.value.licenseFile' $licenses | while IFS=$'\t' read -r name license; do
+      mkdir -p $out/licenses/$(dirname $name)
+      cp $license $out/licenses/$name
+    done
+    ${jq}/bin/jq --arg out $out 'with_entries(if .value.licenseFile then . * {value: {licenseFile: ($out+"/licenses/"+.key)}} else . end)' $licenses > $out/licenses.json
   '';
 }

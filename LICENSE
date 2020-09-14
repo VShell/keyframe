@@ -4,7 +4,7 @@ cms/ - AGPLv3 or later
 ingestd/ - AGPLv3 or later
 stream-muc-manager/ - GPLv3 or later
 systemd-socket-activation-shim/ - GPLv3 or later
-webapp/ - GPLv3 or later
+ui/ - GPLv3 or later
 This directory - BSD 2-clause
 
 All components are copyright 2019 Shell Turner. Some components additionally have other copyrights.

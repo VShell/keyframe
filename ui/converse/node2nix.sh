@@ -12,3 +12,4 @@ nix-build -o $tmp/converse -E 'with import <nixpkgs> {}; (callPackage ./. {}).sr
 jq 'del(.dependencies."@converse/headless")' $tmp/converse/package-lock.json > $tmp/package-lock.json
 
 node2nix -i $tmp/converse/package.json -l $tmp/package-lock.json -o $script_dir/node-packages.nix -c $script_dir/package.nix -e $script_dir/node-env.nix --development
+node2nix -i <(echo '[{"license-checker": "25.0.1"}]') -o $script_dir/license-node-packages.nix -c $script_dir/license-package.nix -e $script_dir/license-node-env.nix

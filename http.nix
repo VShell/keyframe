@@ -35,9 +35,10 @@ in lib.mkIf cfg.enable {
           "/stream/" = {
             root = "${ui}";
             tryFiles = "/index.html =404";
-            extraConfig = ''
-              rewrite ^/stream/(?<stream>[a-zA-Z0-9]+)\.m3u8$ /stream-meta/hls/$stream/ redirect;
-            '';
+          };
+          "/view/" = {
+            root = "${ui}";
+            tryFiles = "/index.html =404";
           };
           "~ ^/stream/[a-zA-Z0-9]+.mpd$" = {
             proxyPass = "http://unix:/run/keyframe/streamredirect/http.sock";

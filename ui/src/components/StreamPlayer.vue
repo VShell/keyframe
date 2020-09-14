@@ -44,7 +44,7 @@ export default {
     player.on(MediaPlayer.events.PLAYBACK_NOT_ALLOWED, () => {
       console.log('Playback did not start due to auto play restrictions. Muting audio and reloading');
       this.$refs.player.muted = true;
-      this.player.seek(this.player.duration()-4);
+      this.player.seek(this.player.duration()-3);
       this.player.play();
     });
 
@@ -55,11 +55,6 @@ export default {
     if (this.player) {
       this.player.reset();
     }
-  },
-  methods: {
-    seekToLive() {
-      this.player.seek(this.player.duration()-4);
-    },
   },
   components: {
     ControlBar,

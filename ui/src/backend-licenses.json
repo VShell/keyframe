@@ -1,0 +1,14 @@
+{
+  "keyframe": {
+    "license": "Various licenses",
+    "licenseFile": "LICENSE"
+  },
+  "cms": {
+    "license": "AGPL-3.0-or-later",
+    "licenseFile": "cms/COPYING"
+  },
+  "ingestd": {
+    "license": "AGPL-3.0-or-later",
+    "licenseFile": "ingestd/COPYING"
+  }
+}

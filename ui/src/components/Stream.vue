@@ -1,10 +1,10 @@
 <template>
-  <b-container fluid class="vh-100 p-0">
+  <b-container fluid class="h-100 p-0">
     <b-row no-gutters class="h-100">
       <b-col cols="8" class="pl-1 pt-1">
         <StreamPlayer :mpdUrl="mpdUrl" />
       </b-col>
-      <b-col cols="4" class="h-100 pl-3 pr-1 pt-1">
+      <b-col cols="4" :class="[$style.streamchat, 'pl-3', 'pr-1', 'pt-1']">
         <StreamChat :stream="$route.params.stream" :domain="domain" class="h-100" />
       </b-col>
     </b-row>
@@ -31,3 +31,9 @@ export default {
   },
 };
 </script>
+
+<style module>
+.streamchat {
+  height: calc(100vh - 3.5rem);
+}
+</style>

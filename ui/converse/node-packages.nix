@@ -11550,7 +11550,7 @@ let
     name = "converse.js";
     packageName = "converse.js";
     version = "6.0.1";
-    src = ../../../../../../run/user/1000/tmp.9akyJef6Z9/converse;
+    src = ../../../../../../run/user/1000/tmp.85jksYfB4B/converse;
     dependencies = [
       (sources."@babel/cli-7.5.0" // {
         dependencies = [
