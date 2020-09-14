@@ -55,6 +55,8 @@ converse.plugins.add('hide-chatroom-participants', {
   },
 });
 
+let converseRoot = null;
+
 export default {
   name: 'StreamChat',
   props: {
@@ -75,6 +77,11 @@ export default {
     this.fontFaces = null;
   },
   mounted() {
+    if(converseRoot) {
+      this.$el.parentNode.replaceChild(converseRoot, this.$el);
+      return;
+    }
+    converseRoot = this.$el;
     const shadow = this.shadow = this.$el.attachShadow({ mode: 'open' });
     const converseAssetsUrl = process.env.BASE_URL + converseAssetsPath + (converseAssetsPath.endsWith('/') ? '' : '/');
 
