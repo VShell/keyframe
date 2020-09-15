@@ -14,5 +14,6 @@ module.exports = {
   globals: {
     converse: 'readonly',
     converseAssetsPath: 'readonly',
+    testDomain: 'readonly',
   },
 };

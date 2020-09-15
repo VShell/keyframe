@@ -11494,14 +11494,9 @@ let
       (sources."@vue/cli-service-4.5.4" // {
         dependencies = [
           sources."acorn-7.4.0"
-          sources."ansi-styles-4.2.1"
           sources."cacache-13.0.1"
-          sources."chalk-3.0.0"
-          sources."color-convert-2.0.1"
-          sources."color-name-1.1.4"
           sources."find-cache-dir-3.3.1"
           sources."find-up-4.1.0"
-          sources."has-flag-4.0.0"
           sources."locate-path-5.0.0"
           sources."make-dir-3.1.0"
           sources."p-locate-4.1.0"
@@ -11510,9 +11505,7 @@ let
           sources."semver-6.3.0"
           sources."source-map-0.6.1"
           sources."ssri-7.1.0"
-          sources."supports-color-7.2.0"
           sources."terser-webpack-plugin-2.3.8"
-          sources."vue-loader-v16-npm:vue-loader@16.0.0-beta.7"
         ];
       })
       (sources."@vue/cli-shared-utils-4.5.4" // {
@@ -13117,6 +13110,17 @@ let
       (sources."vue-loader-15.9.3" // {
         dependencies = [
           sources."hash-sum-1.0.2"
+        ];
+      })
+      (sources."vue-loader-v16-npm:vue-loader@16.0.0-beta.7" // {
+        dependencies = [
+          sources."ansi-styles-4.2.1"
+          sources."chalk-3.0.0"
+          sources."color-convert-2.0.1"
+          sources."color-name-1.1.4"
+          sources."has-flag-4.0.0"
+          sources."source-map-0.6.1"
+          sources."supports-color-7.2.0"
         ];
       })
       sources."vue-router-3.4.3"

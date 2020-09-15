@@ -14,14 +14,12 @@ stdenv.mkDerivation {
     node_modules = "${package}/lib/node_modules/keyframe-ui/node_modules";
   };
   postPatch = ''
-    pwd
     ${lib.concatStrings (lib.mapAttrsToList (key: licenseFile:
       ''
         ${jq}/bin/jq --arg key ${key} --arg licenseFile ${licenseFile} '. * {($key): {"licenseFile": $licenseFile}}' src/backend-licenses.json > src/backend-licenses.json.new
         mv src/backend-licenses.json{.new,}
       ''
     ) licenses)}
-    cat src/backend-licenses.json
   '';
   configurePhase = ''
     ln -s ${package}/lib/node_modules/keyframe-ui/node_modules node_modules

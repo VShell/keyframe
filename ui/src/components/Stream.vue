@@ -22,7 +22,10 @@ export default {
       return this.$route.path + '.mpd';
     },
     domain() {
-      return 'teststream.keyframe.alterednarrative.net';
+      if (typeof testDomain != 'undefined') {
+        return testDomain;
+      }
+      return window.location.hostname;
     },
   },
   components: {

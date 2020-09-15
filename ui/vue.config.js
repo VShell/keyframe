@@ -42,6 +42,14 @@ const config = {
           return [definitions];
         })
         .end();
+    if (config.get('mode') != 'production') {
+      config.plugin('define').tap(([definitions]) => {
+        Object.assign(definitions, {
+          testDomain: JSON.stringify('teststream.keyframe.alterednarrative.net'),
+        });
+        return [definitions];
+      });
+    }
   },
   devServer: {
     proxy: {
