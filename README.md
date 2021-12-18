@@ -2,6 +2,12 @@
 
 Keyframe is a self-hosted live video streaming server with integrated community features.
 
+## Archived
+
+This system no longer compiles. Individual parts of it may be interesting - the main one would be ingestd, a system which takes in video over SRT and produces a Low-Latency DASH stream.
+
+I appear to have lost some code which was being used on the keyframe.live server, which resolved an issue with audio/video desync by inserting silent audio packets in the case of packet loss.
+
 ## Getting Started
 
 On a [NixOS](https://nixos.org) server, add the following to /etc/nixos/keyframe.nix:
